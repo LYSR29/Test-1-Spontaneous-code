@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <#include <iostream>
+#include <vector>
 #include <unordered_map>
 #include <iomanip>
 #include <sstream>
 #include <locale>
+#include <algorithm>  // <-- Agregar esta línea
 
 using namespace std;
 
