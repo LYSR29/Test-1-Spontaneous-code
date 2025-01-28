@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <sstream>
 #include <locale>
-#include <algorithm>  // <-- Agregar esta línea
+#include <algorithm>  
 
 using namespace std;
 
