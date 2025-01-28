@@ -1,47 +1,75 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
+#include <iomanip>
+#include <sstream>
+#include <locale>
+
 using namespace std;
+
+// Martian number symbols
+unordered_map<int, string> martianSymbols = {
+    {0, "🜁"}, {1, "🜂"}, {2, "🜃"}, {3, "🜄"}, {4, "🜅"},
+    {5, "🜆"}, {6, "🜇"}, {7, "🜈"}, {8, "🜉"}, {9, "🜊"}
+};
+
+// Martian months and days
+unordered_map<int, string> martianMonths = {
+    {1, "Øna"}, {2, "Færa"}, {3, "Marqa"}, {4, "Abral"},
+    {5, "Mÿo"}, {6, "Juqa"}, {7, "Julæ"}, {8, "Agnos"},
+    {9, "Septa"}, {10, "Octra"}, {11, "Novæ"}, {12, "Decim"}
+};
+
+vector<string> martianDays = {"Lun", "Mar", "Mier", "Jue", "Værn", "Sab", "Dom"};
 
 // Function to convert numbers to Martian symbols
 string convertToMartianNumber(int number) {
-    string martianSymbols[] = {"🜁", "🜂", "🜃", "🜄", "🜅", "🜆", "🜇", "🜈", "🜉", "🜊"};
-    string result = "";
+    if (number == 0) return martianSymbols[0];
+
+    ostringstream result;
     while (number > 0) {
-        result = martianSymbols[number % 10] + result;
+        result << martianSymbols[number % 10];
         number /= 10;
     }
-    return result.empty() ? martianSymbols[0] : result;
+
+    string output = result.str();
+    reverse(output.begin(), output.end());  // Ensure correct order
+    return output;
 }
 
-// Function to print the calendar for a given year
+// Function to print a month in the Martian calendar
+void printMartianMonth(int month) {
+    cout << martianMonths[month] << "\n";
+    
+    for (const auto& day : martianDays) {
+        cout << setw(5) << day;  // Formatting for alignment
+    }
+    cout << "\n";
+
+    for (int date = 1; date <= 30; ++date) {
+        cout << setw(5) << convertToMartianNumber(date);
+        if (date % 7 == 0) cout << "\n";  // New line every 7 days
+    }
+    cout << "\n\n";
+}
+
+// Function to print the Martian calendar for a given year
 void printMartianCalendar(int year) {
-    vector<string> martianMonths = {"Øna", "Færa", "Marqa", "Abral", "Mÿo", "Juqa", "Julæ", "Agnos", "Septa", "Octra", "Novæ", "Decim"};
-    vector<string> martianDays = {"Lun", "Mar", "Mier", "Jue", "Værn", "Sab", "Dom"};
+    cout << "Year: " << convertToMartianNumber(year) << " (" << year << ")\n\n";
 
-    // Print year in Martian symbols and terrestrial format
-    cout << "Year: " << convertToMartianNumber(year) << " (" << year << ")" << "\n\n";
-
-    for (int month = 0; month < 12; ++month) {
-        cout << martianMonths[month] << "\n";
-
-        // Print days of the week
-        for (int day = 0; day < 7; ++day) {
-            cout << martianDays[day] << " ";
-        }
-        cout << "\n";
-
-        // Print days of the month (1-30, converted to Martian symbols)
-        for (int date = 1; date <= 30; ++date) {
-            cout << convertToMartianNumber(date) << " ";
-            if (date % 7 == 0) cout << "\n"; // Line break every 7 days
-        }
-        cout << "\n\n";
+    for (int month = 1; month <= 12; ++month) {
+        printMartianMonth(month);
     }
 }
 
+// Main function
 int main() {
+    setlocale(LC_ALL, "");  // Ensure proper display of UTF-8 characters
+
     for (int year = 2025; year <= 2029; ++year) {
         printMartianCalendar(year);
     }
+
     return 0;
 }
+
